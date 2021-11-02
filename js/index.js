@@ -117,7 +117,7 @@ window.addEventListener('keyup',function(e){
     let key = e.key;
     for(i in virues){
         v = virues[i]
-        if(v.letter.toLowerCase() === key.toLowerCase()){
+        if(v.letter.toLowerCase() === key.toLowerCase() && config.status == 1){
             let dieImg = document.createElement('img')
             game.appendChild(dieImg)
             dieImg.src = './imgs/virus-die.png'
