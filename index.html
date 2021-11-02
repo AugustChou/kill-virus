@@ -5,8 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kill-virus</title>
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
-    
+    <div id="stage">
+
+        <!--游戏元素层,动态-->
+        <div id="game">
+
+        </div>
+
+        <!--UI层，开始界面，失败界面。分数统计-->
+        <div id="ui">
+            <!--显示分数-->
+            <div class="score-ui">
+                <img src="./imgs/vir.png" alt="">
+                <span id="score-label">0</span>
+            </div>
+            <!--开始界面-->
+            <div id="start-alert">
+                <div class="game-desc">
+                    <img src="imgs/logo.png" class="logo" alt="">
+                    <p>玩法介绍</p>
+                </div>
+
+                <footer>
+                    <div id="start-btn">点击屏幕开始游戏</div>
+                    <p>Created by AugustChou</p>
+                </footer>
+            </div>
+
+
+            <!--失败界面-->
+            <div id="game-over-alert"></div>
+
+        </div>
+    </div>
 </body>
+<script src="./js/index.js"></script>
 </html>
