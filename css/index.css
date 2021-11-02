@@ -154,12 +154,12 @@ body{
 
 /*滑动动画*/
 .slide-up{
-    transform: translateY(-400px);
+    transform: translateY(-600px);
     transition: transform 0.4s;
 }
 
 .slide-down{
-    transform: translateY(400px);
+    transform: translateY(600px);
     transition: transform 0.4s;
 }
 
