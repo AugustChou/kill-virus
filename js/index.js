@@ -100,14 +100,18 @@ function showWarning(){
     uiLayer.appendChild(warningLayer)
 }
 
+
+//游戏结束
+let gameOverAlert = document.querySelector('#game-over-alert')
 function gameOver(){
     clearInterval(timer)
     clearInterval(updater)
     config.status = 2
+    gameOverAlert.style.display='block'
 }
 
 let scoreLabel = document.querySelector('#score-label')
-
+let xmEffect = document.querySelector('#xm')
 //监听键盘事件
 window.addEventListener('keyup',function(e){
     let key = e.key;
@@ -130,6 +134,27 @@ window.addEventListener('keyup',function(e){
 
             score++;
             scoreLabel.innerHTML = score
+            //播放音效
+            xmEffect.currentTime = 0;
+            xmEffect.play()
         }
     }
 })
+
+//重玩
+let restartBtn = document.querySelector('#restart-btn')
+restartBtn.addEventListener('click',()=>{
+    resetGame()
+})
+
+function resetGame(){
+    gameOverAlert.style.display = 'none'
+    config.status = 1
+    score = 0
+    scoreLabel.innerHTML = score
+    game.innerHTML = ''
+    virues = []
+    uiLayer.removeChild(document.querySelector('.warning'))
+    uiLayer.warning = false
+    startGame()
+}
