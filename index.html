@@ -11,9 +11,7 @@
     <div id="stage">
 
         <!--游戏元素层,动态-->
-        <div id="game">
-
-        </div>
+        <div id="game"></div>
 
         <!--UI层，开始界面，失败界面。分数统计-->
         <div id="ui">
@@ -21,6 +19,11 @@
             <div class="score-ui">
                 <img src="./imgs/vir.png" alt="">
                 <span id="score-label">0</span>
+            </div>
+            <!--显示关卡数-->
+            <div class="level-ui">
+                <p>关卡:</p>
+                <span id="level-label">1</span>
             </div>
             <!--开始界面-->
             <div id="start-alert">
@@ -42,6 +45,11 @@
                 <div id="restart-btn">重玩</div>
             </div>
 
+            <!--下一关界面-->
+            <div id="next-alert">
+                <h1>恭喜过关！</h1>
+                <div id="next-btn">下一关</div>
+            </div>
         </div>
     </div>
     <audio src="./imgs/xm2.mp3" id="xm"></audio>

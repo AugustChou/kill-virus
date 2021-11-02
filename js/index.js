@@ -2,9 +2,11 @@ let config = {
     //游戏状态 0：游戏未开始 1：游戏进行中 2：游戏结束
     status: 0,
     //病毒生成间隔
-    interval:800,
+    interval:805,
     //下落速度
-    speed:2
+    speed:2,
+    //关卡等级
+    level: 1
 }
 //分数
 let score = 0
@@ -23,12 +25,11 @@ startAlert.addEventListener('click',()=>{
 
     //更新游戏状态
     config.status = 1
-
     startGame()
 })
 var timer ,updater;
 function startGame(){
-    timer = setInterval(makeVirus,config.interval)
+    timer = setInterval(makeVirus,(config.interval-(config.level*5)))
     updater = setInterval(update ,16)
 }
 
@@ -80,6 +81,9 @@ function makeVirus(){
 }
 
 let winH = stage.offsetHeight
+let nextAlert = document.querySelector('#next-alert')
+let nextBtn = document.querySelector('#next-btn')
+let levelLabel = document.querySelectorAll('#level-label')
 //update 动画 刷新元素位置
 function update(){
     for(i in virues){
@@ -88,9 +92,18 @@ function update(){
         if(virus.offsetTop > (winH-200) && !uiLayer.warning ){
             showWarning()
             uiLayer.warning = true;
+            setTimeout(()=>{
+                uiLayer.warning = false
+            },2000)
         }else if(virus.offsetTop >= winH){
             gameOver()
         }
+    }
+    if((score+1)%(10*config.level+1) == 0){
+        clearInterval(timer)
+        clearInterval(updater)
+        nextAlert.style.display = 'block'
+        config.status = 0
     }
 }
 
@@ -115,8 +128,9 @@ let xmEffect = document.querySelector('#xm')
 //监听键盘事件
 window.addEventListener('keyup',function(e){
     let key = e.key;
-    for(i in virues){
-        v = virues[i]
+    let ischecked = false
+    for(let i = 0 ; i<virues.length ; i++){
+        let v = virues[i]
         if(v.letter.toLowerCase() === key.toLowerCase() && config.status == 1){
             let dieImg = document.createElement('img')
             game.appendChild(dieImg)
@@ -137,7 +151,12 @@ window.addEventListener('keyup',function(e){
             //播放音效
             xmEffect.currentTime = 0;
             xmEffect.play()
+            ischecked = true
+            break;
         }
+    }
+    if(!ischecked && config.status == 1){
+        makeVirus()
     }
 })
 
@@ -156,5 +175,21 @@ function resetGame(){
     virues = []
     uiLayer.removeChild(document.querySelector('.warning'))
     uiLayer.warning = false
+    startGame()
+}
+
+//下一关
+
+nextBtn.addEventListener('click',()=>{
+    nextLevel()
+})
+
+function nextLevel(){
+    nextAlert.style.display = 'none'
+    config.level++
+    levelLabel.innerHTML = config.level
+    game.innerHTML = ''
+    virues = []
+    config.status = 1
     startGame()
 }
