@@ -2,7 +2,7 @@ let config = {
     //游戏状态 0：游戏未开始 1：游戏进行中 2：游戏结束
     status: 0,
     //病毒生成间隔
-    interval:805,
+    interval:810,
     //下落速度
     speed:2,
     //关卡等级
@@ -29,7 +29,7 @@ startAlert.addEventListener('click',()=>{
 })
 var timer ,updater;
 function startGame(){
-    timer = setInterval(makeVirus,(config.interval-(config.level*5)))
+    timer = setInterval(makeVirus,(config.interval-(config.level*10)))
     updater = setInterval(update ,16)
 }
 
@@ -81,9 +81,11 @@ function makeVirus(){
 }
 
 let winH = stage.offsetHeight
+let startTimer,cTimer,count = 3
+let nextTime = document.querySelector('#next-time')
 let nextAlert = document.querySelector('#next-alert')
 let nextBtn = document.querySelector('#next-btn')
-let levelLabel = document.querySelectorAll('#level-label')
+let levelLabel = document.querySelector('#level-label')
 //update 动画 刷新元素位置
 function update(){
     for(i in virues){
@@ -99,11 +101,19 @@ function update(){
             gameOver()
         }
     }
-    if((score+1)%(10*config.level+1) == 0){
+    if((score+1)%(20*(config.level*2)+1) == 0){
         clearInterval(timer)
         clearInterval(updater)
         nextAlert.style.display = 'block'
         config.status = 0
+        startTimer=setInterval(()=>{
+            nextTime.innerHTML = count
+            count--
+        },1000)
+        cTimer = setTimeout(()=>{
+            clearInterval(startTimer)
+            nextLevel()
+        },2500)
     }
 }
 
@@ -123,12 +133,17 @@ function gameOver(){
     gameOverAlert.style.display='block'
 }
 
+let isPause = false
 let scoreLabel = document.querySelector('#score-label')
 let xmEffect = document.querySelector('#xm')
 //监听键盘事件
 window.addEventListener('keyup',function(e){
     let key = e.key;
     let ischecked = false
+    //游戏暂停
+    if(key === "Enter"){
+        gamePause()
+    }
     for(let i = 0 ; i<virues.length ; i++){
         let v = virues[i]
         if(v.letter.toLowerCase() === key.toLowerCase() && config.status == 1){
@@ -159,6 +174,24 @@ window.addEventListener('keyup',function(e){
         makeVirus()
     }
 })
+let pasueUi = document.querySelector('.pause-ui')
+//暂停
+function gamePause(){
+    if(config.status != 2){
+        if(isPause){
+            startGame()
+            config.status = 1
+            isPause = !isPause
+            pasueUi.style.display = 'none'
+        }else{
+            clearInterval(timer)
+            clearInterval(updater)
+            config.status = 0
+            isPause = !isPause
+            pasueUi.style.display = 'block'
+        }
+    }
+ }
 
 //重玩
 let restartBtn = document.querySelector('#restart-btn')
